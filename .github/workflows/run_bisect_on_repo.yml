@@ -1,0 +1,71 @@
+name: Automated Git Bisect
+
+on:
+  workflow_dispatch:
+    inputs:
+      gh_token:
+        description: 'GitHub Token for cloning and accessing the repository'
+        required: true
+      org_repo:
+        description: 'Organization and repository name (e.g., org/repo)'
+        required: true
+      init_branch_name:
+        description: 'Initial branch name to start the bisect process'
+        required: true
+      good_commit:
+        description: 'Known good commit'
+        required: true
+      bad_commit:
+        description: 'Known bad commit (optional, defaults to the latest commit of the init branch)'
+        required: false
+      check_commands:
+        description: 'Commands to test each commit, separated by newline characters'
+        required: true
+      java_version:
+        description: 'Java version to use for the build'
+        required: false
+        default: '11'
+
+jobs:
+  bisect:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.inputs.org_repo }}
+        token: ${{ github.event.inputs.gh_token }}
+        ref: ${{ github.event.inputs.init_branch_name }}
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: ${{ github.event.inputs.java_version }}
+
+    - name: Resolve bad commit
+      run: |
+        if [[ -z "${{ github.event.inputs.bad_commit }}" ]]; then
+          BAD_COMMIT=$(git rev-parse HEAD)
+        elif git rev-parse --verify --quiet ${{ github.event.inputs.bad_commit }}^{commit}; then
+          BAD_COMMIT=${{ github.event.inputs.bad_commit }}
+        else
+          echo "The specified bad commit is invalid."
+          exit 1
+        fi
+        echo "BAD_COMMIT=$BAD_COMMIT" >> $GITHUB_ENV
+
+    - name: Create and execute the check script
+      run: |
+        # Create the check script from the input commands
+        echo "${{ github.event.inputs.check_commands }}" > bisect-check.sh
+        chmod +x bisect-check.sh
+
+        # Run git bisect
+        git bisect start
+        git bisect bad $BAD_COMMIT
+        git bisect good ${{ github.event.inputs.good_commit }}
+        git bisect run ./bisect-check.sh
+        git bisect reset
+
+    - name: Finalize results
+      run: echo "Bisect results are available in the workflow logs."
