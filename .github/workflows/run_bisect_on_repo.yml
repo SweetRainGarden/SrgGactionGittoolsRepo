@@ -8,17 +8,21 @@ on:
         required: true
       org_repo:
         description: 'Organization and repository name (e.g., org/repo)'
+        default: "SweetRainGarden/SrgGitRecordsRepo"
         required: true
       init_branch_name:
         description: 'Initial branch name to start the bisect process'
+        default: "develop"
         required: true
       good_commit:
         description: 'Known good commit'
+        default: "ef8f76f85afb8cacb2cc84b9a21b7801e3145ff4"
         required: true
       bad_commit:
         description: 'Known bad commit (optional, defaults to the latest commit of the init branch)'
         required: false
       check_commands:
+        default: "./gradlew test"
         description: 'Commands to test each commit, separated by newline characters'
         required: true
       java_version:
