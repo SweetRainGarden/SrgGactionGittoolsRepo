@@ -28,7 +28,7 @@ on:
       java_version:
         description: 'Java version to use for the build'
         required: false
-        default: '11'
+        default: '17'
 
 jobs:
   bisect:
