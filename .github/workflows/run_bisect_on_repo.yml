@@ -40,6 +40,7 @@ jobs:
         repository: ${{ github.event.inputs.org_repo }}
         token: ${{ secrets.GITHUB_TOKEN || github.event.inputs.gh_token }}
         ref: ${{ github.event.inputs.init_branch_name }}
+        fetch-depth: '0'
 
     - name: "EEE -> Set build env --> 1: JDK 17"
       uses: actions/setup-java@v3
