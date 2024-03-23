@@ -28,7 +28,7 @@ on:
 
 jobs:
   bisect:
-    runs-on: ubuntu-latest
+    runs-on: [ 'self-hosted', 'macOS' ]
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
