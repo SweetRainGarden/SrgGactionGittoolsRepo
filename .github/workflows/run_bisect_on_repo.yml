@@ -5,7 +5,7 @@ on:
     inputs:
       gh_token:
         description: 'GitHub Token for cloning and accessing the repository'
-        required: true
+        required: false
       org_repo:
         description: 'Organization and repository name (e.g., org/repo)'
         default: "SweetRainGarden/SrgGitRecordsRepo"
@@ -38,7 +38,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: ${{ github.event.inputs.org_repo }}
-        token: ${{ github.event.inputs.gh_token }}
+        token: ${{ secrets.GITHUB_TOKEN || github.event.inputs.gh_token }}
         ref: ${{ github.event.inputs.init_branch_name }}
 
     - name: Set up JDK
