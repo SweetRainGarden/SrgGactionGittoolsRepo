@@ -71,16 +71,15 @@ jobs:
 
     - name: Create and execute the check script
       run: |
-        # Create the check script from the input commands
         echo "${{ github.event.inputs.check_commands }}" > bisect-check.sh
         chmod +x bisect-check.sh
-
-        # Run git bisect
         git bisect start
         git bisect bad $BAD_COMMIT
         git bisect good ${{ github.event.inputs.good_commit }}
         git bisect run ./bisect-check.sh
+        # Assuming the bisect process has completed and identified the first bad commit
+        FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
+        echo "## Bisect result: $FIRST_BAD_COMMIT" >> $GITHUB_STEP_SUMMARY
         git bisect reset
-
     - name: Finalize results
       run: echo "Bisect results are available in the workflow logs."
