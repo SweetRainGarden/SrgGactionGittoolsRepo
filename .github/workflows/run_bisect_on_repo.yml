@@ -73,27 +73,28 @@ jobs:
     - name: Create the check script
       run: |
         # first bad commit:7abdb50f6b661a3e9039c3d4d315600da7b2729e
-        echo "${{ github.event.inputs.check_commands }}" > bisect-check.sh
-        chmod +x bisect-check.sh
+        echo "${{ github.event.inputs.check_commands }}" > bisect_check.sh
+        chmod +x bisect_check.sh
 
     - name: Run bisect with check command bash
       run: |
         git bisect start
         git bisect bad $INIT_BAD_COMMIT_ID
         git bisect good ${{ github.event.inputs.good_commit }}
-        BISECT_OUTPUT=$(git bisect run ./bisect-check.sh)
+        BISECT_OUTPUT=$(git bisect run ./bisect_check.sh)
         echo "$BISECT_OUTPUT"
         FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
         
+        echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
         if [[ -z "$FIRST_BAD_COMMIT" ]]; then
-          echo "No bad commit found."
+          echo "No bad commit found." 
+          echo "No bad commit found." >> $GITHUB_STEP_SUMMARY
         else
-          echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
-          DIFF_URL="https://github.com/${{ github.event.inputs.org_repo }}/commit/$FIRST_BAD_COMMIT"
+          DIFF_URL="https://github.com/${{ github.event.inputs.org_repo }}/commit/${FIRST_BAD_COMMIT}"
           echo "FIRST_BAD_COMMIT=$FIRST_BAD_COMMIT" >> $GITHUB_ENV
-          echo "FIRST_BAD_COMMIT=[$FIRST_BAD_COMMIT]($DIFF_URL)" >> $GITHUB_STEP_SUMMARY
+          echo "FIRST_BAD_COMMIT: [$FIRST_BAD_COMMIT]($DIFF_URL)" >> $GITHUB_STEP_SUMMARY
           ERROR_LOG=$(echo "$BISECT_OUTPUT" | awk '/first bad commit: first commit that fails/{flag=1; next} /Bisecting:/{flag=0} flag')
-          echo "Error log:" >> $GITHUB_STEP_SUMMARY
+          echo "### Error log:" >> $GITHUB_STEP_SUMMARY
           echo "$ERROR_LOG" >> $GITHUB_STEP_SUMMARY
         fi
         git bisect reset
