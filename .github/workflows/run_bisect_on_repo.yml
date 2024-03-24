@@ -25,8 +25,8 @@ on:
       check_commands:
         description: 'Commands to test each commit, separated by newline characters'
         default: |
-          "./gradlew clean"
-          "./gradlew test"
+          ./gradlew clean
+          ./gradlew test
         required: true
       java_version:
         description: 'Java version to use for the build'
