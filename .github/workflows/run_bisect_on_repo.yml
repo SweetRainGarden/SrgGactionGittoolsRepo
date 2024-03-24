@@ -20,6 +20,7 @@ on:
         required: true
       bad_commit:
         description: 'Known bad commit (optional, defaults to the latest commit of the init branch)'
+        default: "3a97867dcfd0f0e74980f25e6fbc1c41a5c9075a"
         required: false
       check_commands:
         default: "./gradlew test"
