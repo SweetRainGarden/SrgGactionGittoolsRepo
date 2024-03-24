@@ -83,7 +83,7 @@ jobs:
         git bisect good ${{ github.event.inputs.good_commit }}
         BISECT_OUTPUT=$(git bisect run ./bisect-check.sh)
         echo "$BISECT_OUTPUT"
-        FIRST_BAD_COMMIT=$(echo "$BISECT_OUTPUT" | grep -oP '(?<=^)[a-f0-9]{40}(?=$)' | tail -1)
+        FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
         if [[ -z "$FIRST_BAD_COMMIT" ]]; then
           echo "No bad commit found."
         else
