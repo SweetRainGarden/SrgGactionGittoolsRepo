@@ -23,8 +23,10 @@ on:
         default: "3a97867dcfd0f0e74980f25e6fbc1c41a5c9075a"
         required: false
       check_commands:
-        default: "./gradlew test"
         description: 'Commands to test each commit, separated by newline characters'
+        default: |
+          "./gradlew clean"
+          "./gradlew test"
         required: true
       java_version:
         description: 'Java version to use for the build'
