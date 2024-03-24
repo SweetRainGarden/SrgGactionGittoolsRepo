@@ -84,15 +84,13 @@ jobs:
         BISECT_OUTPUT=$(git bisect run ./bisect-check.sh)
         echo "$BISECT_OUTPUT"
         FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
+        
         if [[ -z "$FIRST_BAD_COMMIT" ]]; then
           echo "No bad commit found."
         else
-          echo "FIRST_BAD_COMMIT=$FIRST_BAD_COMMIT" >> $GITHUB_ENV
-          DIFF_URL="https://github.com/${{ github.event.inputs.org_repo }}/commit/$FIRST_BAD_COMMIT"
           echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
-          echo "First bad commit: $FIRST_BAD_COMMIT" >> $GITHUB_STEP_SUMMARY
-          echo "Diff URL: $DIFF_URL" >> $GITHUB_STEP_SUMMARY
-
+          DIFF_URL="https://github.com/${{ github.event.inputs.org_repo }}/commit/$FIRST_BAD_COMMIT"
+          echo "FIRST_BAD_COMMIT=[$FIRST_BAD_COMMIT]($DIFF_URL)" >> $GITHUB_ENV
           ERROR_LOG=$(echo "$BISECT_OUTPUT" | awk '/first bad commit: first commit that fails/{flag=1; next} /Bisecting:/{flag=0} flag')
           echo "Error log:" >> $GITHUB_STEP_SUMMARY
           echo "$ERROR_LOG" >> $GITHUB_STEP_SUMMARY
