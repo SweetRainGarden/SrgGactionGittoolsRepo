@@ -16,7 +16,7 @@ on:
         required: true
       good_commit:
         description: 'Known good commit'
-        default: "1f4057cf45d1d6a5dba6a11f53c324d2ee68fa26"
+        default: "c7e772928a6b222f1b34126cf1e586ffa98a923e"
         required: true
       bad_commit:
         description: 'Known bad commit (optional, defaults to the latest commit of the init branch)'
