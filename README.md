@@ -3,6 +3,10 @@
 ## Overview
 This GitHub Action automates the `git bisect` process to help identify the commit that introduced a regression or bug in your project. By automating the bisect process, you can quickly pinpoint the exact commit causing the issue without manually checking each potential commit.
 
+## Test repository
+- repository: https://github.com/SweetRainGarden/SrgGitRecordsRepo
+- [first bad commit in SrgGitRecordsRepo](https://github.com/SweetRainGarden/SrgGitRecordsRepo/commit/7abdb50f6b661a3e9039c3d4d315600da7b2729e), it should show up in the Action result summary.
+
 ## Features
 - Automatically performs a binary search on your commit history to find the faulty commit.
 - Configurable for different repositories, branches, and Java environments.
