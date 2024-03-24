@@ -3,12 +3,13 @@ name: Automated Git Bisect
 on:
   workflow_dispatch:
     inputs:
-      gh_token:
-        description: 'GitHub Token for cloning and accessing the repository'
-        required: false
       org_repo:
         description: 'Organization and repository name (e.g., org/repo)'
         default: "SweetRainGarden/SrgGitRecordsRepo"
+        required: true
+      check_commands:
+        description: 'Commands to test each commit, separated by "&&"'
+        default: ./gradlew clean && ./gradlew test
         required: true
       init_branch_name:
         description: 'Initial branch name to start the bisect process'
@@ -19,17 +20,16 @@ on:
         default: "c7e772928a6b222f1b34126cf1e586ffa98a923e"
         required: true
       bad_commit:
-        description: 'Known bad commit (optional, defaults to the latest commit of the init branch)'
+        description: 'Known bad commit (optional, defaults to the latest commit of the initial branch)'
         default: "3a97867dcfd0f0e74980f25e6fbc1c41a5c9075a"
         required: false
-      check_commands:
-        description: 'Commands to test each commit, separated by "&&"'
-        default: ./gradlew clean && ./gradlew test
-        required: true
       java_version:
         description: 'Java version to use for the build'
         required: false
         default: '17'
+      gh_token:
+        description: 'GitHub Token for cloning and accessing the repository if it is for an private repository'
+        required: false
 
 jobs:
   job_bisect:
