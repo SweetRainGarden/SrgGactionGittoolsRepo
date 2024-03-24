@@ -90,7 +90,8 @@ jobs:
         else
           echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
           DIFF_URL="https://github.com/${{ github.event.inputs.org_repo }}/commit/$FIRST_BAD_COMMIT"
-          echo "FIRST_BAD_COMMIT=[$FIRST_BAD_COMMIT]($DIFF_URL)" >> $GITHUB_ENV
+          echo "FIRST_BAD_COMMIT=$FIRST_BAD_COMMIT" >> $GITHUB_ENV
+          echo "FIRST_BAD_COMMIT=[$FIRST_BAD_COMMIT]($DIFF_URL)" >> $GITHUB_STEP_SUMMARY
           ERROR_LOG=$(echo "$BISECT_OUTPUT" | awk '/first bad commit: first commit that fails/{flag=1; next} /Bisecting:/{flag=0} flag')
           echo "Error log:" >> $GITHUB_STEP_SUMMARY
           echo "$ERROR_LOG" >> $GITHUB_STEP_SUMMARY
