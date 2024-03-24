@@ -33,7 +33,7 @@ on:
 
 jobs:
   job_bisect:
-    runs-on: [ 'self-hosted', 'macOS' ]
+    runs-on: [ 'macos-latest' ]
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v4.1.1
