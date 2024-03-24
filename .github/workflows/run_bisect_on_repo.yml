@@ -60,14 +60,14 @@ jobs:
     - name: Resolve bad commit
       run: |
         if [[ -z "${{ github.event.inputs.bad_commit }}" ]]; then
-          BAD_COMMIT=$(git rev-parse HEAD)
+          INIT_BAD_COMMIT_ID=$(git rev-parse HEAD)
         elif git rev-parse --verify --quiet ${{ github.event.inputs.bad_commit }}^{commit}; then
-          BAD_COMMIT=${{ github.event.inputs.bad_commit }}
+          INIT_BAD_COMMIT_ID=${{ github.event.inputs.bad_commit }}
         else
           echo "The specified bad commit is invalid."
           exit 1
         fi
-        echo "BAD_COMMIT=$BAD_COMMIT" >> $GITHUB_ENV
+        echo "INIT_BAD_COMMIT_ID=$INIT_BAD_COMMIT_ID" >> $GITHUB_ENV
 
     - name: Create and execute the check script
       run: |
@@ -75,7 +75,7 @@ jobs:
         echo "${{ github.event.inputs.check_commands }}" > bisect-check.sh
         chmod +x bisect-check.sh
         git bisect start
-        git bisect bad $BAD_COMMIT
+        git bisect bad $INIT_BAD_COMMIT_ID
         git bisect good ${{ github.event.inputs.good_commit }}
         git bisect run ./bisect-check.sh
         # Assuming the bisect process has completed and identified the first bad commit
