@@ -32,7 +32,7 @@ on:
         default: '17'
 
 jobs:
-  bisect:
+  job_bisect:
     runs-on: [ 'self-hosted', 'macOS' ]
     steps:
     - name: Checkout the repository
