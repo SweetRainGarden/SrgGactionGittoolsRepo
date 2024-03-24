@@ -81,8 +81,16 @@ jobs:
         git bisect start
         git bisect bad $INIT_BAD_COMMIT_ID
         git bisect good ${{ github.event.inputs.good_commit }}
-        git bisect run ./bisect-check.sh
-        FIRST_BAD_COMMIT=$(git bisect bad)
+        # Run the bisect with the check script and capture the output
+        git bisect run ./bisect-check.sh > bisect_output.txt 2>&1
+        FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
+        # Extract only the commit ID
+        PURE_COMMIT_ID=$(echo $FIRST_BAD_COMMIT | grep -o '[0-9a-f]\{40\}')
+        # Generate the GitHub diff URL
+        DIFF_URL="https://github.com/${{ github.event.inputs.org_repo }}/commit/${PURE_COMMIT_ID}"
         echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
-        echo "$FIRST_BAD_COMMIT" >> $GITHUB_STEP_SUMMARY
+        echo "First bad commit: $PURE_COMMIT_ID" >> $GITHUB_STEP_SUMMARY
+        echo "Diff URL: $DIFF_URL" >> $GITHUB_STEP_SUMMARY
+        echo "## Error Output" >> $GITHUB_STEP_SUMMARY
+        cat bisect_output.txt >> $GITHUB_STEP_SUMMARY
         git bisect reset
