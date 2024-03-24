@@ -35,7 +35,7 @@ jobs:
     runs-on: [ 'self-hosted', 'macOS' ]
     steps:
     - name: Checkout the repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.1
       with:
         repository: ${{ github.event.inputs.org_repo }}
         token: ${{ secrets.GITHUB_TOKEN || github.event.inputs.gh_token }}
@@ -43,13 +43,13 @@ jobs:
         fetch-depth: '0'
 
     - name: "EEE -> Set build env --> 1: JDK 17"
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4.2.1
       with:
         java-version: '${{ github.event.inputs.java_version }}'
         distribution: 'temurin'
 
     - name: "EEE -> Set build env --> 2: Gradle current stable version"
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/gradle-build-action@v3.1.0
       with:
         gradle-version: current
 
