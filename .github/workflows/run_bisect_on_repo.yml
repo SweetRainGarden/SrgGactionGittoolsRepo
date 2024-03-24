@@ -53,8 +53,8 @@ jobs:
       with:
         gradle-version: current
 
-    # - name: Set up Android SDK
-    #   uses: android-actions/setup-android@v2
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v3.2.0
 
 
     - name: Resolve bad commit
