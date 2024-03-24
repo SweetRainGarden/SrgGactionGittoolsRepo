@@ -23,10 +23,8 @@ on:
         default: "3a97867dcfd0f0e74980f25e6fbc1c41a5c9075a"
         required: false
       check_commands:
-        description: 'Commands to test each commit, separated by newline characters'
-        default: |
-          ./gradlew clean
-          ./gradlew test
+        description: 'Commands to test each commit, separated by "&&"'
+        default: ./gradlew clean && ./gradlew test
         required: true
       java_version:
         description: 'Java version to use for the build'
@@ -74,8 +72,21 @@ jobs:
 
     - name: Create the check script
       run: |
-        # first bad commit:7abdb50f6b661a3e9039c3d4d315600da7b2729e
-        echo "${{ github.event.inputs.check_commands }}" > bisect_check.sh
+        # Trim leading and trailing '&&' and replace with a single newline character
+        COMMANDS="${{ github.event.inputs.check_commands }}"
+        COMMANDS="${COMMANDS##&&}"  # Remove leading &&
+        COMMANDS="${COMMANDS%%&&}"  # Remove trailing &&
+    
+        # Split commands by '&&' and write to a script file
+        IFS='&&' read -ra CMD_ARRAY <<< "$COMMANDS"
+        for CMD in "${CMD_ARRAY[@]}"; do
+          # Trim any leading and trailing whitespace from each command
+          CMD="$(echo "$CMD" | xargs)"
+          # Skip empty commands
+          if [ -n "$CMD" ]; then
+            echo "$CMD" >> bisect_check.sh
+          fi
+        done
         chmod +x bisect_check.sh
 
     - name: Run bisect with check command bash
