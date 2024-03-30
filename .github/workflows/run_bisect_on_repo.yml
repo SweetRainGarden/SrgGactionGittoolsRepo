@@ -91,13 +91,12 @@ jobs:
 
     - name: Check the good commit
       run: |
-        git checkout ${{ github.event.inputs.good_commit }}
+        checkout_result=$(git checkout ${{ github.event.inputs.good_commit }})
         if [[ $? -ne 0 ]]; then
           echo "The specified good commit:${{ github.event.inputs.good_commit }} is invalid in git history" >> $GITHUB_STEP_SUMMARY
           exit 1
         else
           echo "The specified good commit:${{ github.event.inputs.good_commit }} is valid in git history" >> $GITHUB_STEP_SUMMARY
-          
           #run bisect check bash here, if it is not valid, exit 1 and print the error message
           if ! ./bisect_check.sh; then
             echo "The specified good commit:${{ github.event.inputs.good_commit }} is invalid in the check command, means the input good commit is actually not good for you check command." >> $GITHUB_STEP_SUMMARY
