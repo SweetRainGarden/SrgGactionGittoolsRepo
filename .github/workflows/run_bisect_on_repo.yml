@@ -33,7 +33,7 @@ on:
 
 jobs:
   job_bisect:
-    runs-on: [ 'macos-latest' ]
+    runs-on: [ 'macos-14' ]
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v4.1.1
