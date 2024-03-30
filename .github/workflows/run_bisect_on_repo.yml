@@ -100,6 +100,7 @@ jobs:
           #run bisect check bash here, if it is not valid, exit 1 and print the error message
           if ! ./bisect_check.sh; then
             echo "The specified good commit:${{ github.event.inputs.good_commit }} is invalid in the check command, means the input good commit is actually not good for you check command." >> $GITHUB_STEP_SUMMARY
+            git checkout -
             exit 1
           else
             echo "The specified good commit:${{ github.event.inputs.good_commit }} is valid in the check command." >> $GITHUB_STEP_SUMMARY
