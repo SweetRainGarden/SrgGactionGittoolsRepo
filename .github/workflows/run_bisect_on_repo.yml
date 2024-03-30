@@ -116,6 +116,10 @@ jobs:
         echo "$BISECT_OUTPUT"
         FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
         
+        echo "### Bisect log:" >> $GITHUB_STEP_SUMMARY
+        git bisect log >> $GITHUB_STEP_SUMMARY
+        git bisect reset
+
         echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
         if [[ -z "$FIRST_BAD_COMMIT" ]]; then
           echo "No bad commit found." 
@@ -128,4 +132,3 @@ jobs:
           echo "### Error log:" >> $GITHUB_STEP_SUMMARY
           echo "$ERROR_LOG" >> $GITHUB_STEP_SUMMARY
         fi
-        git bisect reset
