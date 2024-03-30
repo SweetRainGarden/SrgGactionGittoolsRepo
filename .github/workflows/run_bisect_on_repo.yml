@@ -115,10 +115,7 @@ jobs:
         BISECT_OUTPUT=$(git bisect run ./bisect_check.sh)
         echo "$BISECT_OUTPUT"
         FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
-        
-        echo "##Bisect log:" >> $GITHUB_STEP_SUMMARY
-        git bisect log >> temp.txt
-        cat temp.txt >> $GITHUB_STEP_SUMMARY
+        git bisect log >> bisect_log.txt
         git bisect reset
 
         echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
@@ -133,3 +130,9 @@ jobs:
           echo "### Error log:" >> $GITHUB_STEP_SUMMARY
           echo "$ERROR_LOG" >> $GITHUB_STEP_SUMMARY
         fi
+
+    - name: Upload bisect_log.txt
+      uses: actions/upload-artifact@v2
+      with:
+        name: bisect_log
+        path: bisect_log.txt
