@@ -117,7 +117,10 @@ jobs:
         FIRST_BAD_COMMIT=$(git rev-parse bisect/bad)
         git bisect log >> bisect_log.txt
         git bisect reset
-
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Bisect Log" >> $GITHUB_STEP_SUMMARY
+        cat bisect_log.txt >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
         echo "## Bisect result" >> $GITHUB_STEP_SUMMARY
         if [[ -z "$FIRST_BAD_COMMIT" ]]; then
           echo "No bad commit found." 
