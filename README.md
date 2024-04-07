@@ -6,7 +6,7 @@ This GitHub Action automates the `git bisect` process to help identify the commi
 ### Click on the Fork button at the top right of the GitHub repository page. This creates a personal copy of the repository where you can experiment with the actions.
 
 ## Test repository
-- Test repository name: https://github.com/SweetRainGarden/SrgGitRecordsRepo
+- Test repository name: [SrgGitRecordsRepo develop branch](https://github.com/SweetRainGarden/SrgGitRecordsRepo/tree/develop)
 - [first bad commit in SrgGitRecordsRepo](https://github.com/SweetRainGarden/SrgGitRecordsRepo/commit/7abdb50f6b661a3e9039c3d4d315600da7b2729e), it should show up in the Action result summary.
 - Result from an sample repo: https://github.com/SweetRainGarden/SrgGactionGittoolsRepo/actions/runs/8410715233
 
