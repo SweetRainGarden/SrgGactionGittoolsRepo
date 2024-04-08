@@ -234,15 +234,25 @@ else
 fi
 
 pr_link=$(gh pr create --base "$final_base_branch" --title "$final_commit_msg" --body "Merge PR by script: $final_commit_msg")
+echo "pr: ${pr_link}"
 if [[ "${do_not_open}" != "true" ]]; then
   open "$pr_link"
 fi
+
 sleep 3
-echo "pr: ${pr_link}"
+
 if [[ "${do_not_merge}" != "true" ]]; then
-  gh pr merge "${pr_link}" -r -d --admin
-  git checkout "$final_base_branch"
-  git pull --rebase
+  if gh pr: $pr_link merge "${pr_link}" -r -d --admin; then
+    echo "PR merged successfully"
+    git checkout "$final_base_branch"
+    git pull --rebase
+  else
+    echo "PR merge failed:"
+    gh pr view "${pr_link}"
+    exit 1
+  fi
 else
   echo "do_not_merge is set to true, so the PR will not be merged"
 fi
+
+    
