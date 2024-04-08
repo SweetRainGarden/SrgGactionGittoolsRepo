@@ -164,8 +164,8 @@ done
 local_branch=$(git rev-parse --abbrev-ref HEAD)
 if [[ -n "${base_branch}" ]]; then
   if [ "$local_branch" != "${base_branch}" ]; then
-    git checkout "${base_branch}"
     echo "Current branch is not the same as base_branch: ${base_branch}"
+    git checkout "${base_branch}"
   else
     echo "Current branch is the same as base_branch: ${base_branch}"
   fi
