@@ -192,7 +192,6 @@ else
   echo "git pull --rebase ran failed: $temp_local_branch"
 fi
 
-
 final_base_branch="${base_branch}"
 
 if [[ -n "${new_base_branch}" ]]; then
@@ -205,8 +204,6 @@ if [[ -n "${new_base_branch}" ]]; then
     final_base_branch="${new_base_branch}"
   fi
 fi
-
-
 
 if git stash list | grep -q "stash"; then
   if ! git stash apply; then
