@@ -211,6 +211,7 @@ if git stash list | grep -q "stash"; then
       exit 1
   else
     echo "git stash apply ran successfully"
+    git stash drop
   fi
 fi
 
