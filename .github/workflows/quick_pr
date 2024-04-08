@@ -187,13 +187,10 @@ git stash
 
 if git pull --rebase; then
   temp_local_branch=$(git rev-parse --abbrev-ref HEAD)
-
   echo "git pull --rebase ran successfully: $temp_local_branch"
 else
   echo "git pull --rebase ran failed: $temp_local_branch"
 fi
-
-git pull --rebase
 
 
 final_base_branch="${base_branch}"
