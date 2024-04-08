@@ -162,6 +162,7 @@ done
 
 
 local_branch=$(git rev-parse --abbrev-ref HEAD)
+
 if [[ -n "${base_branch}" ]]; then
   if [ "$local_branch" != "${base_branch}" ]; then
     echo "Current branch is not the same as base_branch: ${base_branch}"
