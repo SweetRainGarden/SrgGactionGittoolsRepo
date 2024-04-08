@@ -165,7 +165,16 @@ local_branch=$(git rev-parse --abbrev-ref HEAD)
 if [[ -n "${base_branch}" ]]; then
   if [ "$local_branch" != "${base_branch}" ]; then
     echo "Current branch is not the same as base_branch: ${base_branch}"
-    git checkout "${base_branch}"
+    
+    output=$(git checkout "${base_branch}" 2>&1)
+    exit_status=$?
+    if [ $exit_status -eq 0 ]; then
+      echo "Checkout successful: ${base_branch}"
+    else
+      echo "Checkout failed: ${base_branch}, it means you might not in the base branch:${base_branch}"
+      echo "Checkout failed output: $output"
+    fi
+
   else
     echo "Current branch is the same as base_branch: ${base_branch}"
   fi
