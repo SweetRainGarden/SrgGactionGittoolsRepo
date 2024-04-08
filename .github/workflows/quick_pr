@@ -242,7 +242,7 @@ fi
 sleep 3
 
 if [[ "${do_not_merge}" != "true" ]]; then
-  if gh pr: $pr_link merge "${pr_link}" -r -d --admin; then
+  if gh pr merge "${pr_link}" -r -d --admin; then
     echo "PR merged successfully"
     git checkout "$final_base_branch"
     git pull --rebase
